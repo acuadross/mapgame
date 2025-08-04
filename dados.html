@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistente de Viaje de Rol v5</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Fredoka', sans-serif;
+        }
+        .map-bg {
+            background-image: url('https://github.com/acuadross/mapgame/blob/main/map.jpg?raw=true');
+            background-size: cover;
+            background-position: center;
+        }
+        /* Estilo para el nuevo spinner de globo terráqueo */
+        .globe-loader {
+            width: 50px;
+            height: 50px;
+            margin: 20px auto;
+            animation: spin-globe 2s linear infinite;
+        }
+        @keyframes spin-globe {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body class="bg-sky-100 text-slate-800 flex items-center justify-center min-h-screen p-4 map-bg">
+
+    <div class="max-w-2xl bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl p-6 md:p-10 border-o border-sky-500">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-sky-700">Jugador 1</h1>
+            <p class="text-slate-600 mt-2">¡Descubre a dónde te llevará tu próxima aventura!</p>
+        </header>
+
+        <main>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+                <!-- Input del País -->
+                <div class="flex flex-col">
+                    <label for="countryInput" class="mb-2 font-semibold text-lg text-slate-700">📍 ¿Desde qué país sales?</label>
+                    <input list="countries" id="countryInput" name="country" placeholder="Escribe 'España' para empezar" class="w-full p-3 rounded-lg border-2 border-slate-300 focus:border-sky-500 focus:ring-sky-500 transition duration-300" value="España">
+                    <datalist id="countries"></datalist>
+                </div>
+
+                <!-- Input de los Dados -->
+                <div class="flex flex-col">
+                    <label for="diceInput" class="mb-2 font-semibold text-lg text-slate-700">🎲 ¿Qué has sacado en los dados?</label>
+                    <input type="number" id="diceInput" min="2" max="12" placeholder="Ej: 7" class="w-full p-3 rounded-lg border-2 border-slate-300 focus:border-sky-500 focus:ring-sky-500 transition duration-300">
+                </div>
+            </div>
+
+            <!-- Botón de Búsqueda -->
+            <div class="mt-8 text-center">
+                <button id="searchButton" class="bg-orange-500/80 text-white font-bold py-3 px-8 rounded-full hover:bg-orange-500/90 transform hover:scale-105 transition-transform duration-300 shadow-lg text-xl">
+                    🗺️ ¡Buscar Destinos!
+                </button>
+            </div>
+
+            <!-- Resultados -->
+            <div id="results-container" class="mt-10">
+                <div id="message" class="text-center text-lg font-medium text-slate-700 p-4 bg-red-100/80 rounded-lg hidden border border-red-300"></div>
+                <ul id="results" class="space-y-3"></ul>
+            </div>
+        </main>
+
+    </div>
+
+    <script>
+        // --- BASE DE DATOS DE PAÍSES ---
+        const countriesData = [
+            { name: "Afganistán", lat: 33.93911, lon: 67.709953, area: 652230 }, { name: "Albania", lat: 41.153332, lon: 20.168331, area: 28748 },
+            { name: "Alemania", lat: 51.165691, lon: 10.451526, area: 357022 }, { name: "Andorra", lat: 42.546245, lon: 1.601554, area: 468 },
+            { name: "Angola", lat: -11.202692, lon: 17.873887, area: 1246700 }, { name: "Antigua y Barbuda", lat: 17.060816, lon: -61.796428, area: 442 },
+            { name: "Arabia Saudita", lat: 23.885942, lon: 45.079162, area: 2149690 }, { name: "Argelia", lat: 28.033886, lon: 1.659626, area: 2381741 },
+            { name: "Argentina", lat: -38.416097, lon: -63.616672, area: 2780400 }, { name: "Armenia", lat: 40.069099, lon: 45.038189, area: 29743 },
+            { name: "Australia", lat: -25.274398, lon: 133.775136, area: 7692024 }, { name: "Austria", lat: 47.516231, lon: 14.550072, area: 83871 },
+            { name: "Azerbaiyán", lat: 40.143105, lon: 47.576927, area: 86600 }, { name: "Bahamas", lat: 25.03428, lon: -77.39628, area: 13943 },
+            { name: "Bangladés", lat: 23.684994, lon: 90.356331, area: 147570 }, { name: "Barbados", lat: 13.193887, lon: -59.543198, area: 430 },
+            { name: "Baréin", lat: 25.930414, lon: 50.637772, area: 765 }, { name: "Bélgica", lat: 50.503887, lon: 4.469936, area: 30528 },
+            { name: "Belice", lat: 17.189877, lon: -88.49765, area: 22966 }, { name: "Benín", lat: 9.30769, lon: 2.315834, area: 112622 },
+            { name: "Bielorrusia", lat: 53.709807, lon: 27.953389, area: 207600 }, { name: "Birmania", lat: 21.913965, lon: 95.956223, area: 676578 },
+            { name: "Bolivia", lat: -16.290154, lon: -63.588653, area: 1098581 }, { name: "Bosnia y Herzegovina", lat: 43.915886, lon: 17.679076, area: 51209 },
+            { name: "Botsuana", lat: -22.328474, lon: 24.684866, area: 582000 }, { name: "Brasil", lat: -14.235004, lon: -51.92528, area: 8515767 },
+            { name: "Brunéi", lat: 4.535277, lon: 114.727669, area: 5765 }, { name: "Bulgaria", lat: 42.733883, lon: 25.48583, area: 110879 },
+            { name: "Burkina Faso", lat: 12.238333, lon: -1.561593, area: 274200 }, { name: "Burundi", lat: -3.373056, lon: 29.918886, area: 27834 },
+            { name: "Bután", lat: 27.514162, lon: 90.433601, area: 38394 }, { name: "Cabo Verde", lat: 16.002082, lon: -24.013197, area: 4033 },
+            { name: "Camboya", lat: 12.565679, lon: 104.990963, area: 181035 }, { name: "Camerún", lat: 7.369722, lon: 12.354722, area: 475442 },
+            { name: "Canadá", lat: 56.130366, lon: -106.346771, area: 9984670 }, { name: "Catar", lat: 25.354826, lon: 51.183884, area: 11586 },
+            { name: "Chad", lat: 15.454166, lon: 18.732207, area: 1284000 }, { name: "Chile", lat: -35.675147, lon: -71.542969, area: 756102 },
+            { name: "China", lat: 35.86166, lon: 104.195397, area: 9706961 }, { name: "Chipre", lat: 35.126413, lon: 33.429859, area: 9251 },
+            { name: "Colombia", lat: 4.570868, lon: -74.297333, area: 1141748 }, { name: "Comoras", lat: -11.875001, lon: 43.872219, area: 2235 },
+            { name: "Corea del Norte", lat: 40.339852, lon: 127.510093, area: 120538 }, { name: "Corea del Sur", lat: 35.907757, lon: 127.766922, area: 100210 },
+            { name: "Costa de Marfil", lat: 7.539989, lon: -5.54708, area: 322463 }, { name: "Costa Rica", lat: 9.748917, lon: -83.753428, area: 51100 },
+            { name: "Croacia", lat: 45.1, lon: 15.2, area: 56594 }, { name: "Cuba", lat: 21.521757, lon: -77.781167, area: 109884 },
+            { name: "Dinamarca", lat: 56.26392, lon: 9.501785, area: 43094 }, { name: "Dominica", lat: 15.414999, lon: -61.370976, area: 751 },
+            { name: "Ecuador", lat: -1.831239, lon: -78.183406, area: 276841 }, { name: "Egipto", lat: 26.820553, lon: 30.802498, area: 1002450 },
+            { name: "El Salvador", lat: 13.794185, lon: -88.89653, area: 21041 }, { name: "Emiratos Árabes Unidos", lat: 23.424076, lon: 53.847818, area: 83600 },
+            { name: "Eritrea", lat: 15.179384, lon: 39.782334, area: 117600 }, { name: "Eslovaquia", lat: 48.669026, lon: 19.699024, area: 49037 },
+            { name: "Eslovenia", lat: 46.151241, lon: 14.995463, area: 20273 }, { name: "España", lat: 40.463667, lon: -3.74922, area: 505992 },
+            { name: "Estados Unidos", lat: 37.09024, lon: -95.712891, area: 9833520 }, { name: "Estonia", lat: 58.595272, lon: 25.013607, area: 45227 },
+            { name: "Etiopía", lat: 9.145, lon: 40.489673, area: 1104300 }, { name: "Filipinas", lat: 12.879721, lon: 121.774017, area: 342353 },
+            { name: "Finlandia", lat: 61.92411, lon: 25.748151, area: 338424 }, { name: "Fiyi", lat: -17.713371, lon: 178.065032, area: 18272 },
+            { name: "Francia", lat: 46.227638, lon: 2.213749, area: 640679 }, { name: "Gabón", lat: -0.803689, lon: 11.609444, area: 267667 },
+            { name: "Gambia", lat: 13.443182, lon: -15.310139, area: 10689 }, { name: "Georgia", lat: 42.315407, lon: 43.356892, area: 69700 },
+            { name: "Ghana", lat: 7.946527, lon: -1.023194, area: 238533 }, { name: "Granada", lat: 12.1165, lon: -61.679, area: 344 },
+            { name: "Grecia", lat: 39.074208, lon: 21.824312, area: 131990 }, { name: "Guatemala", lat: 15.783471, lon: -90.230759, area: 108889 },
+            { name: "Guinea", lat: 9.945587, lon: -9.696645, area: 245857 }, { name: "Guinea Ecuatorial", lat: 1.650801, lon: 10.267895, area: 28051 },
+            { name: "Guinea-Bisáu", lat: 11.803749, lon: -15.180413, area: 36125 }, { name: "Guyana", lat: 4.860416, lon: -58.93018, area: 214969 },
+            { name: "Haití", lat: 18.971187, lon: -72.285215, area: 27750 }, { name: "Honduras", lat: 15.199999, lon: -86.241905, area: 112492 },
+            { name: "Hungría", lat: 47.162494, lon: 19.503304, area: 93028 }, { name: "India", lat: 20.593684, lon: 78.96288, area: 3287590 },
+            { name: "Indonesia", lat: -0.789275, lon: 113.921327, area: 1904569 }, { name: "Irak", lat: 33.223191, lon: 43.679291, area: 438317 },
+            { name: "Irán", lat: 32.427908, lon: 53.688046, area: 1648195 }, { name: "Irlanda", lat: 53.41291, lon: -8.24389, area: 70273 },
+            { name: "Islandia", lat: 64.963051, lon: -19.020835, area: 103000 }, { name: "Islas Marshall", lat: 7.131474, lon: 171.184478, area: 181 },
+            { name: "Islas Salomón", lat: -9.64571, lon: 160.156194, area: 28896 }, { name: "Israel", lat: 31.046051, lon: 34.851612, area: 20770 },
+            { name: "Italia", lat: 41.87194, lon: 12.56738, area: 301336 }, { name: "Jamaica", lat: 18.109581, lon: -77.297508, area: 10991 },
+            { name: "Japón", lat: 36.204824, lon: 138.252924, area: 377930 }, { name: "Jordania", lat: 30.585164, lon: 36.238414, area: 89342 },
+            { name: "Kazajistán", lat: 48.019573, lon: 66.923684, area: 2724900 }, { name: "Kenia", lat: -0.023559, lon: 37.906193, area: 580367 },
+            { name: "Kirguistán", lat: 41.20438, lon: 74.766098, area: 199951 }, { name: "Kiribati", lat: -3.370417, lon: -168.734039, area: 811 },
+            { name: "Kuwait", lat: 29.31166, lon: 47.481766, area: 17818 }, { name: "Laos", lat: 19.85627, lon: 102.495496, area: 236800 },
+            { name: "Lesoto", lat: -29.609988, lon: 28.233608, area: 30355 }, { name: "Letonia", lat: 56.879635, lon: 24.603189, area: 64559 },
+            { name: "Líbano", lat: 33.854721, lon: 35.862285, area: 10452 }, { name: "Liberia", lat: 6.428055, lon: -9.429499, area: 111369 },
+            { name: "Libia", lat: 26.3351, lon: 17.228331, area: 1759540 }, { name: "Liechtenstein", lat: 47.166, lon: 9.555373, area: 160 },
+            { name: "Lituania", lat: 55.169438, lon: 23.881275, area: 65300 }, { name: "Luxemburgo", lat: 49.815273, lon: 6.129583, area: 2586 },
+            { name: "Macedonia del Norte", lat: 41.608635, lon: 21.745275, area: 25713 }, { name: "Madagascar", lat: -18.766947, lon: 46.869107, area: 587041 },
+            { name: "Malasia", lat: 4.210484, lon: 101.975766, area: 330803 }, { name: "Malaui", lat: -13.254308, lon: 34.301525, area: 118484 },
+            { name: "Maldivas", lat: 3.202778, lon: 73.22068, area: 300 }, { name: "Malí", lat: 17.570692, lon: -3.996166, area: 1240192 },
+            { name: "Malta", lat: 35.937496, lon: 14.375416, area: 316 }, { name: "Marruecos", lat: 31.791702, lon: -7.09262, area: 446550 },
+            { name: "Mauricio", lat: -20.348404, lon: 57.552152, area: 2040 }, { name: "Mauritania", lat: 21.00789, lon: -10.940835, area: 1030700 },
+            { name: "México", lat: 23.634501, lon: -102.552784, area: 1964375 }, { name: "Micronesia", lat: 7.425554, lon: 150.550812, area: 702 },
+            { name: "Moldavia", lat: 47.411631, lon: 28.369885, area: 33846 }, { name: "Mónaco", lat: 43.750298, lon: 7.412841, area: 2.02 },
+            { name: "Mongolia", lat: 46.862496, lon: 103.846656, area: 1564110 }, { name: "Montenegro", lat: 42.708678, lon: 19.37439, area: 13812 },
+            { name: "Mozambique", lat: -18.665695, lon: 35.529562, area: 801590 }, { name: "Namibia", lat: -22.95764, lon: 18.49041, area: 825615 },
+            { name: "Nauru", lat: -0.522778, lon: 166.931503, area: 21 }, { name: "Nepal", lat: 28.394857, lon: 84.124008, area: 147181 },
+            { name: "Nicaragua", lat: 12.865416, lon: -85.207229, area: 130373 }, { name: "Níger", lat: 17.607789, lon: 8.081666, area: 1267000 },
+            { name: "Nigeria", lat: 9.081999, lon: 8.675277, area: 923768 }, { name: "Noruega", lat: 60.472024, lon: 8.468946, area: 323802 },
+            { name: "Nueva Zelanda", lat: -40.900557, lon: 174.885971, area: 270467 }, { name: "Omán", lat: 21.512583, lon: 55.923255, area: 309500 },
+            { name: "Países Bajos", lat: 52.132633, lon: 5.291266, area: 41850 }, { name: "Pakistán", lat: 30.375321, lon: 69.345116, area: 881912 },
+            { name: "Palaos", lat: 7.51498, lon: 134.58252, area: 459 }, { name: "Panamá", lat: 8.537981, lon: -80.782127, area: 75417 },
+            { name: "Papúa Nueva Guinea", lat: -6.314993, lon: 143.95555, area: 462840 }, { name: "Paraguay", lat: -23.442503, lon: -58.443832, area: 406752 },
+            { name: "Perú", lat: -9.189967, lon: -75.015152, area: 1285216 }, { name: "Polonia", lat: 51.919438, lon: 19.145136, area: 312679 },
+            { name: "Portugal", lat: 39.399872, lon: -8.224454, area: 92090 }, { name: "Reino Unido", lat: 55.378051, lon: -3.435973, area: 242900 },
+            { name: "República Centroafricana", lat: 6.611111, lon: 20.939444, area: 622984 }, { name: "República Checa", lat: 49.817492, lon: 15.472962, area: 78865 },
+            { name: "República del Congo", lat: -0.228021, lon: 15.827659, area: 342000 }, { name: "República Democrática del Congo", lat: -4.038333, lon: 21.758664, area: 2344858 },
+            { name: "República Dominicana", lat: 18.735693, lon: -70.162651, area: 48671 }, { name: "Ruanda", lat: -1.940278, lon: 29.873888, area: 26338 },
+            { name: "Rumania", lat: 45.943161, lon: 24.96676, area: 238391 }, { name: "Rusia", lat: 61.52401, lon: 105.318756, area: 17098242 },
+            { name: "Samoa", lat: -13.759029, lon: -172.104629, area: 2842 }, { name: "San Cristóbal y Nieves", lat: 17.357822, lon: -62.782998, area: 261 },
+            { name: "San Marino", lat: 43.94236, lon: 12.457777, area: 61 }, { name: "San Vicente y las Granadinas", lat: 12.984305, lon: -61.287228, area: 389 },
+            { name: "Santa Lucía", lat: 13.909444, lon: -60.978893, area: 616 }, { name: "Santo Tomé y Príncipe", lat: 0.18636, lon: 6.613081, area: 964 },
+            { name: "Senegal", lat: 14.497401, lon: -14.452362, area: 196722 }, { name: "Serbia", lat: 44.016521, lon: 21.005859, area: 88361 },
+            { name: "Seychelles", lat: -4.679574, lon: 55.491977, area: 452 }, { name: "Sierra Leona", lat: 8.460555, lon: -11.779889, area: 71740 },
+            { name: "Singapur", lat: 1.352083, lon: 103.819836, area: 710 }, { name: "Siria", lat: 34.802075, lon: 38.996815, area: 185180 },
+            { name: "Somalia", lat: 5.152149, lon: 46.199616, area: 637657 }, { name: "Sri Lanka", lat: 7.873054, lon: 80.771797, area: 65610 },
+            { name: "Suazilandia", lat: -26.522503, lon: 31.465866, area: 17364 }, { name: "Sudáfrica", lat: -30.559482, lon: 22.937506, area: 1221037 },
+            { name: "Sudán", lat: 12.862807, lon: 30.217636, area: 1861484 }, { name: "Sudán del Sur", lat: 6.876992, lon: 31.306979, area: 619745 },
+            { name: "Suecia", lat: 60.128161, lon: 18.643501, area: 450295 }, { name: "Suiza", lat: 46.818188, lon: 8.227512, area: 41284 },
+            { name: "Surinam", lat: 3.919305, lon: -56.027783, area: 163820 }, { name: "Tailandia", lat: 15.870032, lon: 100.992541, area: 513120 },
+            { name: "Tanzania", lat: -6.369028, lon: 34.888822, area: 945087 }, { name: "Tayikistán", lat: 38.861034, lon: 71.276093, area: 143100 },
+            { name: "Timor Oriental", lat: -8.874217, lon: 125.727539, area: 14874 }, { name: "Togo", lat: 8.619543, lon: 0.824782, area: 56785 },
+            { name: "Tonga", lat: -21.178986, lon: -175.198242, area: 747 }, { name: "Trinidad y Tobago", lat: 10.691803, lon: -61.222523, area: 5130 },
+            { name: "Túnez", lat: 33.886917, lon: 9.537499, area: 163610 }, { name: "Turkmenistán", lat: 38.969719, lon: 59.556278, area: 488100 },
+            { name: "Turquía", lat: 38.963745, lon: 35.243322, area: 783562 }, { name: "Tuvalu", lat: -7.109535, lon: 177.64933, area: 26 },
+            { name: "Ucrania", lat: 48.379433, lon: 31.16558, area: 603550 }, { name: "Uganda", lat: 1.373333, lon: 32.290275, area: 241551 },
+            { name: "Uruguay", lat: -32.522779, lon: -55.765835, area: 176215 }, { name: "Uzbekistán", lat: 41.377491, lon: 64.585262, area: 447400 },
+            { name: "Vanuatu", lat: -15.376706, lon: 166.959158, area: 12189 }, { name: "Venezuela", lat: 6.42375, lon: -66.58973, area: 916445 },
+            { name: "Vietnam", lat: 14.058324, lon: 108.277199, area: 331212 }, { name: "Yemen", lat: 15.552727, lon: 48.516388, area: 527968 },
+            { name: "Yibuti", lat: 11.825138, lon: 42.590275, area: 23200 }, { name: "Zambia", lat: -13.133897, lon: 27.849332, area: 752612 },
+            { name: "Zimbabue", lat: -19.015438, lon: 29.154857, area: 390757 }
+        ];
+
+        // --- ELEMENTOS DEL DOM ---
+        const countryInput = document.getElementById('countryInput');
+        const diceInput = document.getElementById('diceInput');
+        const searchButton = document.getElementById('searchButton');
+        const resultsList = document.getElementById('results');
+        const messageDiv = document.getElementById('message');
+        const datalist = document.getElementById('countries');
+
+        /**
+         * Calcula la distancia en kilómetros entre dos puntos geográficos.
+         */
+        function getDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Radio de la Tierra en km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a =
+                0.5 - Math.cos(dLat) / 2 +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                (1 - Math.cos(dLon)) / 2;
+            return R * 2 * Math.asin(Math.sqrt(a));
+        }
+
+        /**
+         * Rellena el datalist con los nombres de los países.
+         */
+        function populateDatalist() {
+            countriesData.forEach(country => {
+                const option = document.createElement('option');
+                option.value = country.name;
+                datalist.appendChild(option);
+            });
+        }
+        
+        /**
+         * Muestra un mensaje en la interfaz.
+         */
+        function showMessage(html) {
+            messageDiv.innerHTML = html;
+            messageDiv.classList.remove('hidden');
+        }
+
+        /**
+         * Llama a la API de Gemini para generar una excusa humorística.
+         */
+        async function generateAndShowExcuse(countryName, reason) {
+            // Muestra solo la animación del globo
+            const globeSVG = `<svg class="globe-loader" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" stroke="#3498db" stroke-width="2" fill="none" />
+                <path d="M 50,5 A 45,45 0 0,1 50,95" stroke="#3498db" stroke-width="1" fill="none"/>
+                <path d="M 5,50 A 45,45 0 0,1 95,50" stroke="#3498db" stroke-width="1" fill="none"/>
+                <ellipse cx="50" cy="50" rx="20" ry="45" stroke="#3498db" stroke-width="1" fill="none" stroke-dasharray="2 5"/>
+            </svg>`;
+            showMessage(globeSVG);
+            
+            const prompt = `Eres un director de un juego de rol de mesa para niños de 5 a 7 años. Un jugador ha intentado viajar desde ${countryName} pero ha fallado. Invéntate una excusa muy corta (una frase), divertida y sencilla, relacionada con algo típico de ${countryName}. Por ejemplo, para Japón: '¡Oh no! ¡Un luchador de sumo se ha sentado en tu barco y no se moverá!' o para Egipto: '¡Una momia traviesa ha escondido las llaves de tu camello!'. La razón real del fallo es: '${reason}'. Solo da la excusa, sin explicaciones ni saludos.`;
+            
+            const apiKey = ""; // La API key se gestiona automáticamente
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+            
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error de la API: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                const excuse = result.candidates[0].content.parts[0].text;
+                showMessage(`<strong>¡Viaje fallido!</strong><br>${excuse}`);
+            } catch (error) {
+                console.error("Error al contactar con Gemini:", error);
+                showMessage(`<strong>¡Viaje fallido!</strong><br>Te has quedado en ${countryName} porque los dados han decidido tomarse un descanso para el café. ¡Inténtalo de nuevo!`);
+            }
+        }
+
+        /**
+         * Función principal que se ejecuta al pulsar el botón.
+         */
+        async function findReachableCountries() {
+            resultsList.innerHTML = '';
+            messageDiv.classList.add('hidden');
+            searchButton.disabled = true; // Deshabilitar botón para evitar clics múltiples
+
+            const startCountryName = countryInput.value.trim();
+            const diceRoll = parseInt(diceInput.value, 10);
+
+            if (!startCountryName) {
+                showMessage("Por favor, escribe un país de origen.");
+                searchButton.disabled = false;
+                return;
+            }
+            if (isNaN(diceRoll) || diceRoll < 2 || diceRoll > 12) {
+                showMessage("Por favor, introduce un número válido de los dados (entre 2 y 12).");
+                searchButton.disabled = false;
+                return;
+            }
+
+            const startCountry = countriesData.find(c => c.name.toLowerCase() === startCountryName.toLowerCase());
+            if (!startCountry) {
+                showMessage(`No hemos encontrado el país "${startCountryName}". ¿Está bien escrito?`);
+                searchButton.disabled = false;
+                return;
+            }
+
+            const minAreaRoll = 100000;
+            const maxAreaRoll = 9500000;
+            const minRollAtMinArea = 2;
+            const maxRollAtMaxArea = 6;
+            const countryArea = startCountry.area;
+
+            let minRollRequired;
+            if (countryArea <= minAreaRoll) minRollRequired = minRollAtMinArea;
+            else if (countryArea >= maxAreaRoll) minRollRequired = maxRollAtMaxArea;
+            else {
+                const slope = (maxRollAtMaxArea - minRollAtMinArea) / (maxAreaRoll - minRollAtMinArea);
+                minRollRequired = Math.round(minRollAtMinArea + slope * (countryArea - minAreaRoll));
+            }
+
+            if (diceRoll < minRollRequired) {
+                await generateAndShowExcuse(startCountry.name, "La tirada ha sido demasiado baja.");
+                searchButton.disabled = false;
+                return;
+            }
+            
+            let correctionFactor;
+            if (countryArea <= 100000) correctionFactor = 1;
+            else if (countryArea >= 9500000) correctionFactor = 2;
+            else {
+                correctionFactor = 1 + (countryArea - 100000) * (2 - 1) / (9500000 - 100000);
+            }
+
+            const maxDistance = diceRoll * 100000 * correctionFactor;
+            const numberOfCountriesToShow = diceRoll - minRollRequired + 1;
+
+            const reachableCountries = [];
+            countriesData.forEach(targetCountry => {
+                if (targetCountry.name !== startCountry.name) {
+                    const distance = getDistance(startCountry.lat, startCountry.lon, targetCountry.lat, targetCountry.lon);
+                    if (distance <= maxDistance) {
+                        reachableCountries.push({ name: targetCountry.name, distance: Math.round(distance) });
+                    }
+                }
+            });
+
+            reachableCountries.sort((a, b) => a.distance - b.distance);
+            const finalCountries = reachableCountries.slice(0, numberOfCountriesToShow);
+
+            if (finalCountries.length === 0) {
+                await generateAndShowExcuse(startCountry.name, "Aunque el alcance era bueno, no había países lo suficientemente cerca.");
+            } else {
+                displayResults(finalCountries);
+            }
+            searchButton.disabled = false; // Volver a habilitar el botón
+        }
+        
+        /**
+         * Muestra la lista de países encontrados.
+         */
+        function displayResults(countries) {
+            const title = document.createElement('h2');
+            title.className = "text-2xl font-bold text-sky-600 mb-4 text-center";
+            title.textContent = "¡Puedes viajar a estos países!";
+            resultsList.appendChild(title);
+
+            countries.forEach(country => {
+                const li = document.createElement('li');
+                li.className = "bg-white/80 p-4 rounded-lg shadow flex justify-between items-center border border-slate-200 animate-fade-in";
+                li.innerHTML = `
+                    <span class="font-semibold text-slate-700 text-lg">${country.name}</span>
+                    <span class="text-sm bg-sky-200 text-sky-800 font-medium py-1 px-3 rounded-full">${country.distance.toLocaleString('es-ES')} km</span>
+                `;
+                resultsList.appendChild(li);
+            });
+            
+            const items = resultsList.querySelectorAll('li');
+            items.forEach((item, index) => {
+                item.style.animation = `fadeInUp 0.5s ${index * 0.05}s ease-out forwards`;
+                item.style.opacity = 0;
+            });
+        }
+
+        // --- EVENTOS ---
+        searchButton.addEventListener('click', findReachableCountries);
+        diceInput.addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') {
+                searchButton.click();
+            }
+        });
+
+        // --- INICIALIZACIÓN ---
+        window.onload = () => {
+            populateDatalist();
+        };
+        
+        // --- ESTILOS DINÁMICOS (para animación) ---
+        const styleSheet = document.createElement("style");
+        styleSheet.type = "text/css";
+        styleSheet.innerText = `
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+
+    </script>
+</body>
+</html>

@@ -250,7 +250,8 @@
             
             const prompt = `Eres un director de un juego de rol de mesa para niños de 5 a 7 años. Un jugador ha intentado viajar desde ${countryName} pero ha fallado. Invéntate una excusa muy corta (una frase), divertida y sencilla, relacionada con algo típico de ${countryName}. Por ejemplo, para Japón: '¡Oh no! ¡Un luchador de sumo se ha sentado en tu barco y no se moverá!' o para Egipto: '¡Una momia traviesa ha escondido las llaves de tu camello!'. La razón real del fallo es: '${reason}'. Solo da la excusa, sin explicaciones ni saludos. Haz que cada respuesta sea única y original. Petición ID: ${Date.now()}`;
             
-            const apiKey = ""; // La API key se gestiona automáticamente
+            // IMPORTANTE: Reemplaza "TU_API_KEY_AQUI" con tu clave de API real de Google AI Studio.
+            const apiKey = "AIzaSyAEDlUsuOdDXgly0b2NaD23vZF6K5O1o6U"; 
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
             
             try {
@@ -402,7 +403,9 @@
             resultsListContainer.innerHTML = loadingHTML;
 
             const prompt = `Eres un creador de trivias para niños de 5 a 9 años. Genera una pregunta sobre ${countryName}. La pregunta debe ser interesante pero no demasiado simple. Devuelve un objeto JSON con el formato: {"question": "...", "answers": ["...", "...", "..."], "correctAnswerIndex": X}, donde X es el índice (0, 1, o 2) de la respuesta correcta. La pregunta y las respuestas deben estar en español. No incluyas nada más que el objeto JSON en tu respuesta. Haz que la pregunta sea única y original. Petición ID: ${Date.now()}`;
-            const apiKey = "";
+            
+            // IMPORTANTE: Reemplaza "TU_API_KEY_AQUI" con tu clave de API real de Google AI Studio.
+            const apiKey = "TU_API_KEY_AQUI";
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
             try {

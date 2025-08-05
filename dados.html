@@ -32,42 +32,6 @@
                 transform: rotate(360deg);
             }
         }
-        @keyframes spin-compass {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-        .compass-loader {
-            font-size: 3rem;
-            animation: spin-compass 2s linear infinite;
-        }
-        /* Estilos para la nueva animación de puntos suspensivos */
-        .loading-dots span:nth-child(1) {
-            animation: fadeInOut 1s infinite;
-        }
-        .loading-dots span:nth-child(2) {
-            animation: fadeInOut 1s infinite 0.2s;
-        }
-        .loading-dots span:nth-child(3) {
-            animation: fadeInOut 1s infinite 0.4s;
-        }
-        @keyframes fadeInOut {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 1; }
-        }
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
     </style>
 </head>
 <body class="bg-sky-100 text-slate-800 flex items-center justify-center min-h-screen p-4 map-bg">
@@ -106,14 +70,6 @@
             <div id="results-container" class="mt-10">
                 <div id="message" class="text-center text-lg font-medium text-slate-700 p-4 bg-red-100/80 rounded-lg hidden border border-red-300"></div>
                 <ul id="results" class="space-y-3"></ul>
-
-                <!-- Trivia Section -->
-                <div id="trivia-container" class="bg-sky-100/80 rounded-lg p-6 shadow-md mt-6 hidden">
-                    <h2 id="trivia-question" class="text-xl font-bold text-sky-700 mb-4"></h2>
-                    <div id="trivia-options" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
-                    <div id="trivia-feedback" class="mt-4 text-center text-lg font-bold"></div>
-                    <button id="backButton" class="mt-4 w-full bg-slate-400 text-white font-bold py-2 px-4 rounded-full hover:bg-slate-500 transition-colors duration-300">Volver a la lista</button>
-                </div>
             </div>
         </main>
 
@@ -178,137 +134,74 @@
             { name: "Macedonia del Norte", lat: 41.608635, lon: 21.745275, area: 25713 }, { name: "Madagascar", lat: -18.766947, lon: 46.869107, area: 587041 },
             { name: "Malasia", lat: 4.210484, lon: 101.975766, area: 330803 }, { name: "Malaui", lat: -13.254308, lon: 34.301525, area: 118484 },
             { name: "Maldivas", lat: 3.202778, lon: 73.22068, area: 300 }, { name: "Malí", lat: 17.570692, lon: -3.996166, area: 1240192 },
-            { name: "Malta", lat: 35.937496, lon: 14.375416, area: 316 }, { name: "Marruecos", lat: 31.791702, lon: -7.09262, area: 712550 },
-            { name: "Mauritania", lat: 21.00789, lon: -10.024926, area: 1030700 }, { name: "México", lat: 23.634501, lon: -102.552784, area: 1964375 },
-            { name: "Micronesia", lat: 7.425554, lon: 150.550812, area: 702 }, { name: "Moldavia", lat: 47.411631, lon: 28.369885, area: 33846 },
-            { name: "Mónaco", lat: 43.738418, lon: 7.424616, area: 2 }, { name: "Mongolia", lat: 46.862496, lon: 103.846656, area: 1564116 },
-            { name: "Montenegro", lat: 42.708677, lon: 19.37439, area: 13812 }, { name: "Mozambique", lat: -18.665695, lon: 35.529562, area: 801590 },
-            { name: "Namibia", lat: -22.95764, lon: 18.49041, area: 825615 }, { name: "Nauru", lat: -0.522778, lon: 166.931503, area: 21 },
-            { name: "Nepal", lat: 28.394857, lon: 84.124008, area: 147181 }, { name: "Nicaragua", lat: 12.865416, lon: -85.207229, area: 130373 },
-            { name: "Níger", lat: 17.607789, lon: 8.081666, area: 1267000 }, { name: "Nigeria", lat: 9.081999, lon: 8.675277, area: 923768 },
-            { name: "Noruega", lat: 60.472024, lon: 8.468946, area: 323802 }, { name: "Nueva Zelanda", lat: -40.900557, lon: 174.885971, area: 268838 },
-            { name: "Omán", lat: 21.512583, lon: 55.923255, area: 309500 }, { name: "Países Bajos", lat: 52.132633, lon: 5.291266, area: 41543 },
-            { name: "Pakistán", lat: 30.375321, lon: 69.345116, area: 881912 }, { name: "Palaos", lat: 7.51498, lon: 134.58252, area: 459 },
-            { name: "Panamá", lat: 8.537981, lon: -80.782127, area: 75417 }, { name: "Papúa Nueva Guinea", lat: -6.314993, lon: 143.95555, area: 462840 },
-            { name: "Paraguay", lat: -23.442503, lon: -58.443832, area: 406752 }, { name: "Perú", lat: -9.189967, lon: -75.015152, area: 1285216 },
-            { name: "Polonia", lat: 51.919438, lon: 19.145136, area: 312696 }, { name: "Portugal", lat: 39.399872, lon: -8.224454, area: 92212 },
-            { name: "Reino Unido", lat: 55.378051, lon: -3.435973, area: 242495 }, { name: "República Centroafricana", lat: 6.611111, lon: 20.939444, area: 622984 },
-            { name: "República Checa", lat: 49.817492, lon: 15.472962, area: 78867 }, { name: "República Democrática del Congo", lat: -4.038333, lon: 21.758664, area: 2344858 },
-            { name: "República Dominicana", lat: 18.735693, lon: -70.162651, area: 48671 }, { name: "República del Congo", lat: -0.228021, lon: 15.827659, area: 342000 },
-            { name: "Rumania", lat: 45.943161, lon: 24.96676, area: 238397 }, { name: "Rusia", lat: 61.52401, lon: 105.318756, area: 17098246 },
-            { name: "Ruanda", lat: -1.940278, lon: 29.873888, area: 26338 }, { name: "Samoa", lat: -13.759029, lon: -172.104629, area: 2842 },
+            { name: "Malta", lat: 35.937496, lon: 14.375416, area: 316 }, { name: "Marruecos", lat: 31.791702, lon: -7.09262, area: 446550 },
+            { name: "Mauricio", lat: -20.348404, lon: 57.552152, area: 2040 }, { name: "Mauritania", lat: 21.00789, lon: -10.940835, area: 1030700 },
+            { name: "México", lat: 23.634501, lon: -102.552784, area: 1964375 }, { name: "Micronesia", lat: 7.425554, lon: 150.550812, area: 702 },
+            { name: "Moldavia", lat: 47.411631, lon: 28.369885, area: 33846 }, { name: "Mónaco", lat: 43.750298, lon: 7.412841, area: 2.02 },
+            { name: "Mongolia", lat: 46.862496, lon: 103.846656, area: 1564110 }, { name: "Montenegro", lat: 42.708678, lon: 19.37439, area: 13812 },
+            { name: "Mozambique", lat: -18.665695, lon: 35.529562, area: 801590 }, { name: "Namibia", lat: -22.95764, lon: 18.49041, area: 825615 },
+            { name: "Nauru", lat: -0.522778, lon: 166.931503, area: 21 }, { name: "Nepal", lat: 28.394857, lon: 84.124008, area: 147181 },
+            { name: "Nicaragua", lat: 12.865416, lon: -85.207229, area: 130373 }, { name: "Níger", lat: 17.607789, lon: 8.081666, area: 1267000 },
+            { name: "Nigeria", lat: 9.081999, lon: 8.675277, area: 923768 }, { name: "Noruega", lat: 60.472024, lon: 8.468946, area: 323802 },
+            { name: "Nueva Zelanda", lat: -40.900557, lon: 174.885971, area: 270467 }, { name: "Omán", lat: 21.512583, lon: 55.923255, area: 309500 },
+            { name: "Países Bajos", lat: 52.132633, lon: 5.291266, area: 41850 }, { name: "Pakistán", lat: 30.375321, lon: 69.345116, area: 881912 },
+            { name: "Palaos", lat: 7.51498, lon: 134.58252, area: 459 }, { name: "Panamá", lat: 8.537981, lon: -80.782127, area: 75417 },
+            { name: "Papúa Nueva Guinea", lat: -6.314993, lon: 143.95555, area: 462840 }, { name: "Paraguay", lat: -23.442503, lon: -58.443832, area: 406752 },
+            { name: "Perú", lat: -9.189967, lon: -75.015152, area: 1285216 }, { name: "Polonia", lat: 51.919438, lon: 19.145136, area: 312679 },
+            { name: "Portugal", lat: 39.399872, lon: -8.224454, area: 92090 }, { name: "Reino Unido", lat: 55.378051, lon: -3.435973, area: 242900 },
+            { name: "República Centroafricana", lat: 6.611111, lon: 20.939444, area: 622984 }, { name: "República Checa", lat: 49.817492, lon: 15.472962, area: 78865 },
+            { name: "República del Congo", lat: -0.228021, lon: 15.827659, area: 342000 }, { name: "República Democrática del Congo", lat: -4.038333, lon: 21.758664, area: 2344858 },
+            { name: "República Dominicana", lat: 18.735693, lon: -70.162651, area: 48671 }, { name: "Ruanda", lat: -1.940278, lon: 29.873888, area: 26338 },
+            { name: "Rumania", lat: 45.943161, lon: 24.96676, area: 238391 }, { name: "Rusia", lat: 61.52401, lon: 105.318756, area: 17098242 },
+            { name: "Samoa", lat: -13.759029, lon: -172.104629, area: 2842 }, { name: "San Cristóbal y Nieves", lat: 17.357822, lon: -62.782998, area: 261 },
             { name: "San Marino", lat: 43.94236, lon: 12.457777, area: 61 }, { name: "San Vicente y las Granadinas", lat: 12.984305, lon: -61.287228, area: 389 },
             { name: "Santa Lucía", lat: 13.909444, lon: -60.978893, area: 616 }, { name: "Santo Tomé y Príncipe", lat: 0.18636, lon: 6.613081, area: 964 },
             { name: "Senegal", lat: 14.497401, lon: -14.452362, area: 196722 }, { name: "Serbia", lat: 44.016521, lon: 21.005859, area: 88361 },
-            { name: "Seychelles", lat: -4.679574, lon: 55.491977, area: 459 }, { name: "Sierra Leona", lat: 8.460555, lon: -11.779889, area: 71740 },
-            { name: "Singapur", lat: 1.352083, lon: 103.819836, area: 721 }, { name: "Siria", lat: 34.802075, lon: 38.996815, area: 185180 },
+            { name: "Seychelles", lat: -4.679574, lon: 55.491977, area: 452 }, { name: "Sierra Leona", lat: 8.460555, lon: -11.779889, area: 71740 },
+            { name: "Singapur", lat: 1.352083, lon: 103.819836, area: 710 }, { name: "Siria", lat: 34.802075, lon: 38.996815, area: 185180 },
             { name: "Somalia", lat: 5.152149, lon: 46.199616, area: 637657 }, { name: "Sri Lanka", lat: 7.873054, lon: 80.771797, area: 65610 },
             { name: "Suazilandia", lat: -26.522503, lon: 31.465866, area: 17364 }, { name: "Sudáfrica", lat: -30.559482, lon: 22.937506, area: 1221037 },
-            { name: "Sudán", lat: 12.862807, lon: 30.217636, area: 1861484 }, { name: "Sudán del Sur", lat: 6.877002, lon: 31.306979, area: 644329 },
-            { name: "Suecia", lat: 60.128161, lon: 18.643501, area: 450295 }, { name: "Suiza", lat: 46.818188, lon: 8.227512, area: 41285 },
+            { name: "Sudán", lat: 12.862807, lon: 30.217636, area: 1861484 }, { name: "Sudán del Sur", lat: 6.876992, lon: 31.306979, area: 619745 },
+            { name: "Suecia", lat: 60.128161, lon: 18.643501, area: 450295 }, { name: "Suiza", lat: 46.818188, lon: 8.227512, area: 41284 },
             { name: "Surinam", lat: 3.919305, lon: -56.027783, area: 163820 }, { name: "Tailandia", lat: 15.870032, lon: 100.992541, area: 513120 },
             { name: "Tanzania", lat: -6.369028, lon: 34.888822, area: 945087 }, { name: "Tayikistán", lat: 38.861034, lon: 71.276093, area: 143100 },
-            { name: "Timor Oriental", lat: -8.874217, lon: 125.727539, area: 14919 }, { name: "Togo", lat: 8.619543, lon: 0.824782, area: 56785 },
-            { name: "Tonga", lat: -21.178986, lon: -175.198242, area: 748 }, { name: "Trinidad y Tobago", lat: 10.691803, lon: -61.222503, area: 5131 },
-            { name: "Túnez", lat: 33.886917, lon: 9.537499, area: 163610 }, { name: "Turkmenistán", lat: 38.969719, lon: 60.184554, area: 488100 },
+            { name: "Timor Oriental", lat: -8.874217, lon: 125.727539, area: 14874 }, { name: "Togo", lat: 8.619543, lon: 0.824782, area: 56785 },
+            { name: "Tonga", lat: -21.178986, lon: -175.198242, area: 747 }, { name: "Trinidad y Tobago", lat: 10.691803, lon: -61.222523, area: 5130 },
+            { name: "Túnez", lat: 33.886917, lon: 9.537499, area: 163610 }, { name: "Turkmenistán", lat: 38.969719, lon: 59.556278, area: 488100 },
             { name: "Turquía", lat: 38.963745, lon: 35.243322, area: 783562 }, { name: "Tuvalu", lat: -7.109535, lon: 177.64933, area: 26 },
-            { name: "Ucrania", lat: 48.379433, lon: 31.16558, area: 603550 }, { name: "Uganda", lat: 1.373333, lon: 32.290275, area: 241550 },
-            { name: "Uruguay", lat: -32.522779, lon: -55.765835, area: 176215 }, { name: "Uzbekistán", lat: 41.377491, lon: 64.585262, area: 448978 },
+            { name: "Ucrania", lat: 48.379433, lon: 31.16558, area: 603550 }, { name: "Uganda", lat: 1.373333, lon: 32.290275, area: 241551 },
+            { name: "Uruguay", lat: -32.522779, lon: -55.765835, area: 176215 }, { name: "Uzbekistán", lat: 41.377491, lon: 64.585262, area: 447400 },
             { name: "Vanuatu", lat: -15.376706, lon: 166.959158, area: 12189 }, { name: "Venezuela", lat: 6.42375, lon: -66.58973, area: 916445 },
             { name: "Vietnam", lat: 14.058324, lon: 108.277199, area: 331212 }, { name: "Yemen", lat: 15.552727, lon: 48.516388, area: 527968 },
-            { name: "Yibuti", lat: 11.825138, lon: 42.590275, area: 23200 }, { name: "Zambia", lat: -13.133897, lon: 27.849332, area: 752618 },
+            { name: "Yibuti", lat: 11.825138, lon: 42.590275, area: 23200 }, { name: "Zambia", lat: -13.133897, lon: 27.849332, area: 752612 },
             { name: "Zimbabue", lat: -19.015438, lon: 29.154857, area: 390757 }
         ];
 
-        // Base de datos de trivia predefinida (se puede expandir)
-        const triviaData = {
-            "España": {
-                question: "¿Cuál de estos bailes es típico de España?",
-                options: ["Samba", "Tango", "Flamenco"],
-                answer: "Flamenco"
-            },
-            "Japón": {
-                question: "¿Qué plato típico de Japón está hecho con arroz y pescado?",
-                options: ["Pizza", "Sushi", "Tacos"],
-                answer: "Sushi"
-            },
-            "Italia": {
-                question: "¿Cuál es una comida famosa de Italia que se parece a un sol?",
-                options: ["Una pizza", "Un bocadillo", "Un plátano"],
-                answer: "Una pizza"
-            },
-            "Francia": {
-
-                question: "¿Cuál de estos edificios es muy famoso en Francia?",
-                options: ["Las Pirámides de Egipto", "La Torre Eiffel", "El Big Ben"],
-                answer: "La Torre Eiffel"
-            },
-            "Egipto": {
-                question: "¿Qué animales enormes y con jorobas viven en el desierto de Egipto?",
-                options: ["Osos polares", "Elefantes", "Camellos"],
-                answer: "Camellos"
-            },
-            "Australia": {
-                question: "¿Qué animal famoso de Australia salta y lleva a su cría en una bolsa?",
-                options: ["Un gato", "Un canguro", "Un conejo"],
-                answer: "Un canguro"
-            },
-            "México": {
-                question: "¿Qué sombrero grande y colorido es típico de México?",
-                options: ["Un gorro de lana", "Un sombrero de paja", "Un sombrero de charro"],
-                answer: "Un sombrero de charro"
-            },
-            "Canadá": {
-                question: "¿Qué hoja roja es el símbolo de Canadá?",
-                options: ["Una hoja de roble", "Una hoja de arce", "Una hoja de laurel"],
-                answer: "Una hoja de arce"
-            }
-        };
-
-        // LLM configuration for the "no travel" message
-        const model = "gemini-2.5-flash-preview-05-20";
-        const apiKey = "";
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-
-        // Utility function to calculate distance between two lat/lon points
-        function calculateDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371; // Earth's radius in km
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a =
-                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            return R * c;
-        }
-
-        // DOM Elements
+        // --- ELEMENTOS DEL DOM ---
         const countryInput = document.getElementById('countryInput');
         const diceInput = document.getElementById('diceInput');
         const searchButton = document.getElementById('searchButton');
         const resultsList = document.getElementById('results');
-        const messageContainer = document.getElementById('message');
+        const messageDiv = document.getElementById('message');
         const datalist = document.getElementById('countries');
-        const triviaContainer = document.getElementById('trivia-container');
-        const triviaQuestion = document.getElementById('trivia-question');
-        const triviaOptions = document.getElementById('trivia-options');
-        const triviaFeedback = document.getElementById('trivia-feedback');
-        const backButton = document.getElementById('backButton');
-        const resultsContainer = document.getElementById('results-container');
 
-        // Function to strip accents from a string
-        function stripAccents(str) {
-            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        /**
+         * Calcula la distancia en kilómetros entre dos puntos geográficos.
+         */
+        function getDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Radio de la Tierra en km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a =
+                0.5 - Math.cos(dLat) / 2 +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                (1 - Math.cos(dLon)) / 2;
+            return R * 2 * Math.asin(Math.sqrt(a));
         }
 
-        // Function to find a country by name, ignoring case and accents
-        function findCountryByName(name) {
-            const normalizedName = stripAccents(name.toLowerCase());
-            return countriesData.find(country => stripAccents(country.name.toLowerCase()) === normalizedName);
-        }
-
-        // Function to populate the datalist with country names
+        /**
+         * Rellena el datalist con los nombres de los países.
+         */
         function populateDatalist() {
             countriesData.forEach(country => {
                 const option = document.createElement('option');
@@ -316,273 +209,188 @@
                 datalist.appendChild(option);
             });
         }
-
-        // Function to show the loading animation
-        function showLoadingMessage(baseMessage) {
-            resultsList.classList.add('hidden');
-            messageContainer.classList.remove('hidden');
-            messageContainer.innerHTML = `${baseMessage}<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>`;
-        }
-
-        // Function to hide the loading animation
-        function hideLoadingMessage() {
-            messageContainer.innerHTML = '';
-            messageContainer.classList.add('hidden');
-        }
-
-        // Function to fetch a new "no travel" message from Gemini
-        async function getNoTravelMessage(startCountry) {
-            const uniqueId = Date.now();
-            const prompt = `Crea una excusa única, humorística y creativa para niños de 5 a 9 años, sobre por qué no pueden viajar desde ${startCountry}. La excusa debe ser breve (menos de 22 palabras) y referirse a algo divertido y típico de ese país. No menciones el número de la tirada de dados ni la distancia. La consulta es única: ${uniqueId}.`;
-            
-            const payload = {
-                contents: [{ role: "user", parts: [{ text: prompt }] }]
-            };
-
-            try {
-                const maxRetries = 3;
-                let retryCount = 0;
-                let response;
-                while (retryCount < maxRetries) {
-                    try {
-                        response = await fetch(apiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-                        if (response.ok) {
-                            break;
-                        }
-                    } catch (error) {
-                        console.error('API call failed, retrying...', error);
-                    }
-                    retryCount++;
-                    await new Promise(resolve => setTimeout(resolve, Math.pow(2, retryCount) * 1000));
-                }
-                const result = await response.json();
-                const text = result.candidates[0].content.parts[0].text;
-                return text;
-            } catch (error) {
-                console.error("Error al generar el mensaje:", error);
-                return `Parece que en ${startCountry} hay un festival de piruletas y no podemos salir. ¡Inténtalo de nuevo!`;
-            }
-        }
         
-        // Function to fetch dynamic trivia from Gemini
-        async function getDynamicTrivia(countryName) {
-            const uniqueId = Date.now();
-            const prompt = `Crea una pregunta de trivia sobre el país ${countryName} adaptada para niños de 5 a 9 años. Proporciona una respuesta correcta y dos respuestas incorrectas. La respuesta debe ser un objeto JSON. La consulta es única: ${uniqueId}.`;
-            const payload = {
-                contents: [{ role: "user", parts: [{ text: prompt }] }],
-                generationConfig: {
-                    responseMimeType: "application/json",
-                    responseSchema: {
-                        type: "OBJECT",
-                        properties: {
-                            "question": { "type": "STRING" },
-                            "correct_answer": { "type": "STRING" },
-                            "incorrect_answers": {
-                                "type": "ARRAY",
-                                "items": { "type": "STRING" }
-                            }
-                        }
-                    }
-                }
-            };
+        /**
+         * Muestra un mensaje en la interfaz.
+         */
+        function showMessage(html) {
+            messageDiv.innerHTML = html;
+            messageDiv.classList.remove('hidden');
+        }
+
+        /**
+         * Llama a la API de Gemini para generar una excusa humorística.
+         */
+        async function generateAndShowExcuse(countryName, reason) {
+            // Muestra solo la animación del globo
+            const globeSVG = `<svg class="globe-loader" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" stroke="#3498db" stroke-width="2" fill="none" />
+                <path d="M 50,5 A 45,45 0 0,1 50,95" stroke="#3498db" stroke-width="1" fill="none"/>
+                <path d="M 5,50 A 45,45 0 0,1 95,50" stroke="#3498db" stroke-width="1" fill="none"/>
+                <ellipse cx="50" cy="50" rx="20" ry="45" stroke="#3498db" stroke-width="1" fill="none" stroke-dasharray="2 5"/>
+            </svg>`;
+            showMessage(globeSVG);
+            
+            const prompt = `Eres un director de un juego de rol de mesa para niños de 5 a 7 años. Un jugador ha intentado viajar desde ${countryName} pero ha fallado. Invéntate una excusa muy corta (una frase), divertida y sencilla, relacionada con algo típico de ${countryName}. Por ejemplo, para Japón: '¡Oh no! ¡Un luchador de sumo se ha sentado en tu barco y no se moverá!' o para Egipto: '¡Una momia traviesa ha escondido las llaves de tu camello!'. La razón real del fallo es: '${reason}'. Solo da la excusa, sin explicaciones ni saludos.`;
+            
+            const apiKey = ""; // La API key se gestiona automáticamente
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
             
             try {
                 const response = await fetch(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
                 });
+
+                if (!response.ok) {
+                    throw new Error(`Error de la API: ${response.statusText}`);
+                }
+
                 const result = await response.json();
-                const jsonString = result.candidates[0].content.parts[0].text;
-                const parsedJson = JSON.parse(jsonString);
-                return {
-                    question: parsedJson.question,
-                    options: [parsedJson.correct_answer, ...parsedJson.incorrect_answers],
-                    answer: parsedJson.correct_answer
-                };
+                const excuse = result.candidates[0].content.parts[0].text;
+                showMessage(`<strong>¡Viaje fallido!</strong><br>${excuse}`);
             } catch (error) {
-                console.error("Error al generar la trivia:", error);
-                return null;
+                console.error("Error al contactar con Gemini:", error);
+                showMessage(`<strong>¡Viaje fallido!</strong><br>Te has quedado en ${countryName} porque los dados han decidido tomarse un descanso para el café. ¡Inténtalo de nuevo!`);
             }
         }
 
-        // Function to display the trivia question
-        async function showTrivia(countryName) {
-            resultsList.classList.add('hidden');
-            triviaContainer.classList.remove('hidden');
-            triviaFeedback.textContent = '';
-            
-            let trivia = triviaData[countryName];
-            
-            if (!trivia) {
-                showLoadingMessage(`Pregunta sobre ${countryName}`);
-                triviaOptions.innerHTML = '';
-                triviaOptions.classList.add('hidden');
-                
-                trivia = await getDynamicTrivia(countryName);
-                hideLoadingMessage();
-                
-                if (trivia) {
-                    triviaQuestion.textContent = trivia.question;
-                    triviaOptions.classList.remove('hidden');
-                } else {
-                    triviaQuestion.textContent = "Lo siento, no pude generar una pregunta para este país.";
-                    triviaOptions.classList.add('hidden');
-                    return;
-                }
-            } else {
-                triviaQuestion.textContent = trivia.question;
-            }
-
-            triviaOptions.innerHTML = '';
-            
-            const options = [...trivia.options];
-            // Shuffle options
-            for (let i = options.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [options[i], options[j]] = [options[j], options[i]];
-            }
-
-            options.forEach(optionText => {
-                const button = document.createElement('button');
-                button.textContent = optionText;
-                button.className = 'bg-sky-400 text-white font-semibold py-3 px-4 rounded-lg shadow-md hover:bg-sky-500 transition-colors duration-300';
-                button.addEventListener('click', () => {
-                    checkAnswer(button, optionText, trivia.answer);
-                });
-                triviaOptions.appendChild(button);
-            });
-        }
-
-        // Function to check the trivia answer
-        function checkAnswer(button, selected, correct) {
-            triviaFeedback.classList.remove('text-red-500', 'text-green-500');
-            if (selected === correct) {
-                triviaFeedback.textContent = "¡Correcto! ¡Qué listo eres!";
-                triviaFeedback.classList.add('text-green-500');
-                button.classList.remove('bg-sky-400');
-                button.classList.add('bg-green-500');
-            } else {
-                triviaFeedback.textContent = `¡Oh, no! La respuesta correcta era: ${correct}.`;
-                triviaFeedback.classList.add('text-red-500');
-                button.classList.remove('bg-sky-400');
-                button.classList.add('bg-red-500');
-            }
-            
-            const buttons = triviaOptions.querySelectorAll('button');
-            buttons.forEach(btn => {
-                btn.disabled = true;
-                if (btn.textContent === correct && btn !== button) {
-                    btn.classList.remove('bg-sky-400', 'hover:bg-sky-500');
-                    btn.classList.add('bg-green-300'); // Highlight correct answer
-                }
-            });
-        }
-
-        // Main logic to find reachable countries
+        /**
+         * Función principal que se ejecuta al pulsar el botón.
+         */
         async function findReachableCountries() {
-            const startCountryName = countryInput.value;
+            resultsList.innerHTML = '';
+            messageDiv.classList.add('hidden');
+            searchButton.disabled = true; // Deshabilitar botón para evitar clics múltiples
+
+            const startCountryName = countryInput.value.trim();
             const diceRoll = parseInt(diceInput.value, 10);
-            
-            messageContainer.classList.add('hidden');
-            resultsList.innerHTML = '';
-            triviaContainer.classList.add('hidden');
-            
-            if (!startCountryName || isNaN(diceRoll) || diceRoll < 2 || diceRoll > 12) {
-                messageContainer.textContent = 'Por favor, introduce un país de salida y un número de dados válido (2-12).';
-                messageContainer.classList.remove('hidden', 'bg-red-100/80');
-                messageContainer.classList.add('bg-yellow-100/80');
+
+            if (!startCountryName) {
+                showMessage("Por favor, escribe un país de origen.");
+                searchButton.disabled = false;
+                return;
+            }
+            if (isNaN(diceRoll) || diceRoll < 2 || diceRoll > 12) {
+                showMessage("Por favor, introduce un número válido de los dados (entre 2 y 12).");
+                searchButton.disabled = false;
                 return;
             }
 
-            const startCountry = findCountryByName(startCountryName);
+            const startCountry = countriesData.find(c => c.name.toLowerCase() === startCountryName.toLowerCase());
             if (!startCountry) {
-                messageContainer.textContent = 'País de salida no encontrado. Por favor, selecciona uno de la lista.';
-                messageContainer.classList.remove('hidden', 'bg-yellow-100/80');
-                messageContainer.classList.add('bg-red-100/80');
+                showMessage(`No hemos encontrado el país "${startCountryName}". ¿Está bien escrito?`);
+                searchButton.disabled = false;
+                return;
+            }
+
+            const minAreaRoll = 100000;
+            const maxAreaRoll = 9500000;
+            const minRollAtMinArea = 2;
+            const maxRollAtMaxArea = 6;
+            const countryArea = startCountry.area;
+
+            let minRollRequired;
+            if (countryArea <= minAreaRoll) minRollRequired = minRollAtMinArea;
+            else if (countryArea >= maxAreaRoll) minRollRequired = maxRollAtMaxArea;
+            else {
+                const slope = (maxRollAtMaxArea - minRollAtMinArea) / (maxAreaRoll - minRollAtMinArea);
+                minRollRequired = Math.round(minRollAtMinArea + slope * (countryArea - minAreaRoll));
+            }
+
+            if (diceRoll < minRollRequired) {
+                await generateAndShowExcuse(startCountry.name, "La tirada ha sido demasiado baja.");
+                searchButton.disabled = false;
                 return;
             }
             
-            let maxDistance;
-            if (diceRoll >= 7) {
-                maxDistance = 1500 + (diceRoll - 7) * 2000;
-            } else {
-                maxDistance = 100 * diceRoll;
+            let correctionFactor;
+            if (countryArea <= 100000) correctionFactor = 1;
+            else if (countryArea >= 9500000) correctionFactor = 2;
+            else {
+                correctionFactor = 1 + (countryArea - 100000) * (2 - 1) / (9500000 - 100000);
             }
-            
-            const reachableCountries = countriesData
-                .filter(country => country.name !== startCountry.name)
-                .map(country => {
-                    const distance = calculateDistance(startCountry.lat, startCountry.lon, country.lat, country.lon);
-                    return { ...country, distance: distance };
-                })
-                .filter(country => country.distance <= maxDistance)
-                .sort((a, b) => a.distance - b.distance);
 
-            if (reachableCountries.length > 0) {
-                hideLoadingMessage();
-                messageContainer.classList.add('hidden');
-                displayResults(reachableCountries);
+            const maxDistance = diceRoll * 100000 * correctionFactor;
+            const numberOfCountriesToShow = diceRoll - minRollRequired + 1;
+
+            const reachableCountries = [];
+            countriesData.forEach(targetCountry => {
+                if (targetCountry.name !== startCountry.name) {
+                    const distance = getDistance(startCountry.lat, startCountry.lon, targetCountry.lat, targetCountry.lon);
+                    if (distance <= maxDistance) {
+                        reachableCountries.push({ name: targetCountry.name, distance: Math.round(distance) });
+                    }
+                }
+            });
+
+            reachableCountries.sort((a, b) => a.distance - b.distance);
+            const finalCountries = reachableCountries.slice(0, numberOfCountriesToShow);
+
+            if (finalCountries.length === 0) {
+                await generateAndShowExcuse(startCountry.name, "Aunque el alcance era bueno, no había países lo suficientemente cerca.");
             } else {
-                showLoadingMessage("No has podido salir del país porque");
-                const noTravelMessage = await getNoTravelMessage(startCountryName);
-                hideLoadingMessage();
-                messageContainer.textContent = noTravelMessage;
-                messageContainer.classList.remove('hidden');
-                messageContainer.classList.remove('bg-yellow-100/80');
-                messageContainer.classList.add('bg-red-100/80');
+                displayResults(finalCountries);
             }
+            searchButton.disabled = false; // Volver a habilitar el botón
         }
-
-        // Function to display the list of reachable countries
+        
+        /**
+         * Muestra la lista de países encontrados.
+         */
         function displayResults(countries) {
-            resultsList.innerHTML = '';
-            resultsList.classList.remove('hidden');
-            countries.forEach((country, index) => {
+            const title = document.createElement('h2');
+            title.className = "text-2xl font-bold text-sky-600 mb-4 text-center";
+            title.textContent = "¡Puedes viajar a estos países!";
+            resultsList.appendChild(title);
+
+            countries.forEach(country => {
                 const li = document.createElement('li');
-                li.className = 'bg-white/80 p-4 rounded-lg shadow-lg flex justify-between items-center cursor-pointer transform hover:scale-105 transition-transform duration-300';
-                li.style.animation = `fadeInUp 0.5s ${index * 0.05}s ease-out forwards`;
-                li.style.opacity = 0;
+                li.className = "bg-white/80 p-4 rounded-lg shadow flex justify-between items-center border border-slate-200 animate-fade-in";
                 li.innerHTML = `
-                    <span class="text-lg font-bold text-sky-700">${country.name}</span>
+                    <span class="font-semibold text-slate-700 text-lg">${country.name}</span>
                     <span class="text-sm bg-sky-200 text-sky-800 font-medium py-1 px-3 rounded-full">${country.distance.toLocaleString('es-ES')} km</span>
                 `;
-                li.addEventListener('click', () => showTrivia(country.name));
                 resultsList.appendChild(li);
+            });
+            
+            const items = resultsList.querySelectorAll('li');
+            items.forEach((item, index) => {
+                item.style.animation = `fadeInUp 0.5s ${index * 0.05}s ease-out forwards`;
+                item.style.opacity = 0;
             });
         }
 
-        // Event Listeners
+        // --- EVENTOS ---
         searchButton.addEventListener('click', findReachableCountries);
         diceInput.addEventListener('keyup', (event) => {
             if (event.key === 'Enter') {
                 searchButton.click();
             }
         });
-        countryInput.addEventListener('keyup', (event) => {
-            if (event.key === 'Enter') {
-                // Automatically select the first option from the datalist if available
-                const firstOption = datalist.querySelector('option');
-                if (firstOption) {
-                    countryInput.value = firstOption.value;
-                }
-            }
-        });
-        backButton.addEventListener('click', () => {
-            triviaContainer.classList.add('hidden');
-            resultsList.classList.remove('hidden');
-            triviaFeedback.textContent = '';
-        });
 
-        // Initialisation
-
+        // --- INICIALIZACIÓN ---
         window.onload = () => {
             populateDatalist();
         };
+        
+        // --- ESTILOS DINÁMICOS (para animación) ---
+        const styleSheet = document.createElement("style");
+        styleSheet.type = "text/css";
+        styleSheet.innerText = `
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(styleSheet);
 
     </script>
 </body>

@@ -499,10 +499,11 @@
             startGameBtn.textContent = 'Creando mundo...';
             const nameInputs = document.querySelectorAll('.player-name-input');
             players = [];
+            const startCountry = getRandomElement(gameDatabase);
             nameInputs.forEach((input, index) => {
                 players.push({
                     name: input.value || `Aventurero ${index + 1}`,
-                    currentCountry: 'España',
+                    currentCountry: startCountry.name,
                     hp: 20,
                 });
             });

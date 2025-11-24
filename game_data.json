@@ -1,9 +1,79 @@
 [
-    { "name": "Afganistán", "Monstruos": ["El demonio Div", "El hada Peri"], "Tesoros": ["El Oro Perdido de Bactria"], "Preguntas": ["¿Cuál es su capital?"], "Respuesta1": ["Kabul"], "Respuesta2": ["Roma"], "Respuesta3": ["Madrid"], "Pistas": ["Su capital se llama Kabul"], "Excusas": ["te has quedado atrapado en un torneo de buzkashi."] },
-    { "name": "Albania", "Monstruos": ["El demonio Dreq", "La serpiente dragón Bolla"], "Tesoros": ["El yelmo del héroe Skanderbeg"], "Preguntas": ["¿Qué mar baña sus costas?"], "Respuesta1": ["Adriático"], "Respuesta2": ["Mediterráneo"], "Respuesta3": ["Negro"], "Pistas": ["Su bandera es roja con un águila negra de dos cabezas"], "Excusas": ["un águila bicéfala ha hecho un nido en el motor del avión."] },
-    { "name": "Alemania", "Monstruos": ["La bestia navideña Krampus", "El Doppelgänger"], "Tesoros": ["La Cámara de Ámbar"], "Preguntas": ["¿Cuál es su capital?"], "Respuesta1": ["Berlín"], "Respuesta2": ["Roma"], "Respuesta3": ["Madrid"], "Pistas": ["Es famosa por el Oktoberfest"], "Excusas": ["la burocracia requiere un formulario para solicitar otro formulario."] },
-    { "name": "Argentina", "Monstruos": ["El Pombero", "La Luz Mala"], "Tesoros": ["La ciudad perdida de los Césares"], "Preguntas": ["¿Qué baile es famoso allí?"], "Respuesta1": ["Tango"], "Respuesta2": ["Salsa"], "Respuesta3": ["Flamenco"], "Pistas": ["Es famoso por el tango"], "Excusas": ["un gaucho te ha desafiado a un duelo de payadas."] },
-    { "name": "Australia", "Monstruos": ["El Bunyip", "El Yowie"], "Tesoros": ["El oro de Lasseter's Reef"], "Preguntas": ["¿Qué animal salta muy alto?"], "Respuesta1": ["Canguro"], "Respuesta2": ["Conejo"], "Respuesta3": ["Gato"], "Pistas": ["Es la tierra de los canguros"], "Excusas": ["un canguro te ha robado las llaves del coche."] },
-    { "name": "Egipto", "Monstruos": ["La serpiente Apep", "El devorador Ammit"], "Tesoros": ["La tumba de Tutankamón"], "Preguntas": ["¿Qué río es el más importante?"], "Respuesta1": ["Nilo"], "Respuesta2": ["Amazonas"], "Respuesta3": ["Támesis"], "Pistas": ["Es famoso por sus pirámides"], "Excusas": ["te has perdido dentro de una pirámide."] },
-    { "name": "España", "Monstruos": ["El Coco", "El Basilisco"], "Tesoros": ["El tesoro del galeón San José"], "Preguntas": ["¿Cuál es la capital?"], "Respuesta1": ["Madrid"], "Respuesta2": ["Barcelona"], "Respuesta3": ["Lisboa"], "Pistas": ["Es famosa por la paella y el flamenco"], "Excusas": ["estás atrapado en medio de la siesta nacional."] }
+    {
+        "name": "Afganistán",
+        "Monstruos": ["El demonio Div", "El hada Peri"],
+        "Tesoros": ["El Oro Perdido de Bactria", "Una alfombra mágica tejida con hilos de luna"],
+        "Preguntas": ["¿Cuál es su capital?"],
+        "Respuesta1": ["Kabul"],
+        "Respuesta2": ["Roma"],
+        "Respuesta3": ["Madrid"],
+        "Pistas": ["Su capital se llama Kabul"],
+        "Excusas": ["Te has quedado atrapado en un torneo de buzkashi.", "Una tormenta de arena te ha hecho perder el rumbo."]
+    },
+    {
+        "name": "Albania",
+        "Monstruos": ["El demonio Dreq", "La serpiente dragón Bolla"],
+        "Tesoros": ["El yelmo del héroe Skanderbeg", "Una antigua moneda de la Iliria"],
+        "Preguntas": ["¿Qué mar baña sus costas?"],
+        "Respuesta1": ["Adriático"],
+        "Respuesta2": ["Mediterráneo"],
+        "Respuesta3": ["Negro"],
+        "Pistas": ["Su bandera es roja con un águila negra de dos cabezas"],
+        "Excusas": ["Un águila bicéfala ha hecho un nido en el motor del avión.", "El queso local es tan bueno que te has quedado a aprender la receta."]
+    },
+    {
+        "name": "Alemania",
+        "Monstruos": ["La bestia navideña Krampus", "El Doppelgänger"],
+        "Tesoros": ["La Cámara de Ámbar", "Una partitura original de Bach"],
+        "Preguntas": ["¿Cuál es su capital?"],
+        "Respuesta1": ["Berlín"],
+        "Respuesta2": ["Roma"],
+        "Respuesta3": ["Madrid"],
+        "Pistas": ["Es famosa por el Oktoberfest"],
+        "Excusas": ["La burocracia requiere un formulario para solicitar otro formulario.", "Te has perdido en un bosque de la Selva Negra."]
+    },
+    {
+        "name": "Argentina",
+        "Monstruos": ["El Pombero", "La Luz Mala"],
+        "Tesoros": ["La ciudad perdida de los Césares", "Un mate de plata con incrustaciones de oro"],
+        "Preguntas": ["¿Qué baile es famoso allí?"],
+        "Respuesta1": ["Tango"],
+        "Respuesta2": ["Salsa"],
+        "Respuesta3": ["Flamenco"],
+        "Pistas": ["Es famoso por el tango"],
+        "Excusas": ["Un gaucho te ha desafiado a un duelo de payadas.", "Una manada de capibaras bloquea la carretera."]
+    },
+    {
+        "name": "Australia",
+        "Monstruos": ["El Bunyip", "El Yowie"],
+        "Tesoros": ["El oro de Lasseter's Reef", "Un ópalo con los colores del arcoíris"],
+        "Preguntas": ["¿Qué animal salta muy alto?"],
+        "Respuesta1": ["Canguro"],
+        "Respuesta2": ["Conejo"],
+        "Respuesta3": ["Gato"],
+        "Pistas": ["Es la tierra de los canguros"],
+        "Excusas": ["Un canguro te ha robado las llaves del coche.", "Has sido reclutado para un partido de cricket improvisado."]
+    },
+    {
+        "name": "Egipto",
+        "Monstruos": ["La serpiente Apep", "El devorador Ammit"],
+        "Tesoros": ["La tumba de Tutankamón", "El Ojo de Horus en un amuleto"],
+        "Preguntas": ["¿Qué río es el más importante?"],
+        "Respuesta1": ["Nilo"],
+        "Respuesta2": ["Amazonas"],
+        "Respuesta3": ["Támesis"],
+        "Pistas": ["Es famoso por sus pirámides"],
+        "Excusas": ["Te has perdido dentro de una pirámide.", "Una momia te ha invitado a tomar el té."]
+    },
+    {
+        "name": "España",
+        "Monstruos": ["El Coco", "El Basilisco"],
+        "Tesoros": ["El tesoro del galeón San José", "Una guitarra española con cuerdas de plata"],
+        "Preguntas": ["¿Cuál es la capital?"],
+        "Respuesta1": ["Madrid"],
+        "Respuesta2": ["Barcelona"],
+        "Respuesta3": ["Lisboa"],
+        "Pistas": ["Es famosa por la paella y el flamenco"],
+        "Excusas": ["Estás atrapado en medio de la siesta nacional.", "Una bandada de flamencos te impide el paso."]
+    }
 ]
